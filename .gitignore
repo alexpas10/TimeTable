@@ -242,3 +242,4 @@ ModelManifest.xml
 .fake/
 /src/TimeTable.Data/*.sqlite
 /src/TimeTable.Data/*.dbs
+/src/TimeTable.Web/wwwroot/lib
