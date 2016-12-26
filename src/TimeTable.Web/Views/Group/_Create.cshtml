@@ -1,0 +1,78 @@
+﻿@model GroupDetailVM
+
+<md-dialog ng-controller="dialogController">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Add Group</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="hide()">
+				<md-icon md-font-library="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<form asp-action="@MVC.Controller.Group.Create" asp-controller="@MVC.Controller.Group.Name" method="post" name="groupCreateForm" ng-controller="groupDetailsController">
+		<md-dialog-content class="dialog_content">
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialSelectFor(m => m.TypeId, Model.TypeItems, ngModel: "model.type")
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Name, ngModel: "model.name")
+                    <div ng-messages="groupForm.Name.$error">
+                        @Html.MaterialValidationFor(m => m.Name)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row" ng-if="model.type == 21">
+                <md-input-container class="input-control" ng-init="init()">
+                    <md-select ng-model="model.selectedgroups"
+                               md-on-close="clearSearchTerm()"
+                               data-md-container-class="selectHeader"
+                               name="SelectedGroups"
+                               multiple>
+                        <md-select-header class="select-header">
+                            <input ng-model="searchTerm"
+                                   type="search"
+								   ng-keydown="$event.stopPropagation();"
+                                   class="header-searchbox md-text"
+                                   placeholder="Search">
+                        </md-select-header>
+                        <md-optgroup>
+                            <md-option ng-value="group.id" ng-repeat="group in groups | orderBy : value | filter : {value : searchTerm}">{{group.value}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+            <div ng-hide="model.type == 21">
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.StudentsCount, ngModel: "model.studentscount")
+                        <div ng-messages="groupForm.StudentsCount.$error">
+                            @Html.MaterialValidationFor(m => m.StudentsCount)
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.Year, "model.year")
+                        <div ng-messages="groupForm.Year.$error">
+                            @Html.MaterialValidationFor(m => m.Year)
+                        </div>
+                    </md-input-container>
+                </div>
+            </div>
+    </md-dialog-content>
+
+		<md-dialog-actions layout="row" class="detail-card_actions">
+			<md-button class="md-raised md-primary" type="submit" ng-disabled="!groupForm.$valid">
+				<md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+			</md-button>
+			<md-button class="md-raised" ng-click="hide()">
+				<md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

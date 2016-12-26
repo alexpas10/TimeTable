@@ -1,0 +1,456 @@
+﻿body, html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    padding-bottom: 20px;
+    font-size: 16px;
+    font-family: Roboto, Arial, Helvetica, sans-serif !important;
+}
+
+.content-wrapper {
+    width: 100%;
+    background-color: #fff;
+}
+
+md-icon img {
+    vertical-align: baseline;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.bg-gray {
+    background-color: #EDF0FF;
+}
+
+.title {
+    color: #426AA1;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: .005em;
+}
+
+.list-item_header {
+    height: 40px !important;
+    min-height: 0px !important;
+}
+
+.list-item_info {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.list-item_col {
+    padding-left: 0 !important;
+    position: static !important;
+}
+
+.toolbar_details {
+    height: 184px;
+    max-height: 184px;
+    min-height: 184px;
+}
+
+.details-header {
+    font-size: 30px;
+    line-height: inherit;
+    width: 680px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.input-control {
+    margin: 20px;
+    width: 400px;
+}
+
+md-card-content md-input-container.input-control {
+    width: 100%;
+}
+
+md-toolbar {
+    /*opacity: 1 !important;*/
+    transition: opacity ease-in-out .01s !important;
+}
+
+.md-toast-text {
+    color: white;
+}
+
+.md-sidenav-left {
+    max-width: 250px;
+}
+
+
+.dialog_content {
+    padding: 30px;
+}
+
+p {
+    font-size: 1.6rem;
+    font-weight: 400;
+    letter-spacing: 0.010em;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 10px;
+}
+
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* buttons and links extension to use brackets: [ click me ] */
+.btn-bracketed::before {
+    display: inline-block;
+    content: "[";
+    padding-right: 0.5em;
+}
+
+.btn-bracketed::after {
+    display: inline-block;
+    content: "]";
+    padding-left: 0.5em;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+.primary {
+    color: #106CC8;
+}
+
+/* Material */
+.btn-fab_add {
+    background-color: rgb(255,82,82) !important;
+    color: white !important;
+}
+
+.fab {
+    right: 24px;
+    bottom: 24px;
+    z-index: 2;
+    position: fixed !important;
+}
+
+.detail-card {
+    width: 770px;
+    top: -107px;
+    margin: auto;
+    z-index: 5;
+    position: relative;
+}
+
+.detail-card_actions {
+    padding: 15px;
+    justify-content: flex-end;
+    background-color: white;
+}
+
+.detail-card_content {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+.class-table_content {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.class-card {
+    width: 200px;
+	height: 100%;
+}
+
+.class-card.header {
+    width: 200px;
+	height: initial;
+}
+
+.class-card.half {
+	height:49%;
+}
+
+.class-card.half:hover {
+	height:100%;
+}
+
+.empty-card {
+    background-color:rgb(250,250,250);
+    box-shadow :none;
+    border: 1px solid #bbb;
+    width: 200px;
+    height: 100%;
+}
+
+.empty-card.half {
+	height:49%;
+}
+
+.empty-space-card {
+    width: 38px;
+    min-height: 38px;
+    height: 38px;
+    border: none;
+}
+
+.class-card:hover > .class-card_actions {
+    opacity: 1;
+    height: 40px;
+}
+
+.class-card_content {
+    margin:0px;
+    padding: 8px;
+    font-size: 14px !important;
+}
+
+.class-card_actions {
+    margin: 0px;
+    opacity: 0;
+    height: 40px;
+    justify-content: flex-end;
+    background-color: white;
+    transition: opacity 0.5s;
+}
+
+.md-dialog-container {
+    height: 100% !important;
+}
+
+md-content {
+    overflow: visible;
+}
+
+.side-nav_wrapper {
+    max-width: 250px;
+}
+
+@media (max-width: 771px) {
+    .detail-card {
+        width: 100%;
+    }
+
+    .detail-card_actions {
+        justify-content: space-around;
+    }
+
+    .detail-card_actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1280px) {
+    side-nav_wrapper {
+        display: none;
+    }
+}
+
+.md-avatar-icon-mini {
+    padding: 7px;
+    margin-top: inherit;
+    margin-bottom: inherit;
+    font-size: 20px !important;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: rgba(0,0,0,0.38);
+    color: rgb(250,250,250);
+}
+
+.md-list-item-text p {
+    margin-bottom: 0px !important;
+}
+
+.dialogdemoBasicUsage #popupContainer {
+    position: relative;
+}
+
+.dialogdemoBasicUsage .footer {
+    width: 100%;
+    text-align: center;
+    margin-left: 20px;
+}
+
+    .dialogdemoBasicUsage .footer, .dialogdemoBasicUsage .footer > code {
+        font-size: 0.8em;
+        margin-top: 50px;
+    }
+
+.dialogdemoBasicUsage button {
+    width: 200px;
+}
+
+.dialogdemoBasicUsage div#status {
+    color: #c60008;
+}
+
+.dialogdemoBasicUsage .dialog-demo-prerendered md-checkbox {
+    margin-bottom: 0;
+}
+
+.material-icons.md-light {
+    color: rgba(255, 255, 255, 1);
+    background-color: #9B9B9B;
+}
+
+.material-icons.details-header_icon {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background-color: rgb(63,81,181);
+    color: rgb(250,250,250);
+}
+
+
+.details-additional_info:hover {
+    background-color: #CCC;
+}
+
+.add-object_dialog {
+    min-width: 517px;
+}
+
+md-option .md-text {
+    overflow: inherit;
+}
+
+.primary-color {
+    background-color: rgb(63,81,181) !important;
+    color: rgba(255,255,255,0.87);
+}
+
+.md-gray {
+    color: #727272;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
+
+.selectHeader {
+}
+
+    .selectHeader .header-searchbox {
+        border: none;
+        outline: none;
+        height: 100%;
+        width: 100%;
+        padding: 0;
+    }
+
+    .selectHeader .select-header {
+        box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+        padding-left: 10.667px;
+        height: 48px;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: auto;
+    }
+
+    .selectHeader md-content._md {
+        max-height: 240px;
+    }
+
+
+.form-on-list {
+    background-color: white;
+    border: 1px solid lightgray;
+    padding: 20px;
+    -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+}
+
+.margin-t-10 {
+    margin-top: 10px;
+}
+
+.margin-t-20 {
+    margin-top: 20px;
+}
+
+.flat {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.display-n {
+    display: none;
+}
+
+.position-f {
+    position: fixed;
+}
+
+.position-i {
+    position: inherit;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+dl-horizontal {
+    font-size: 20px;
+    margin-left: 15px;
+}
+
+.dl-horizontal dt {
+    text-align: left;
+}
+
+.delayed-appearance {
+    opacity: 0;
+    -webkit-transition: opacity ease-in-out .6s;
+    transition: opacity ease-in-out .6s;
+}
+
+.visibility-h {
+    visibility: hidden;
+}
+
+
+
+/*.detail-card_actions button {
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}*/
+

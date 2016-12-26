@@ -1,0 +1,8 @@
+﻿@model string
+
+<md-toast ng-controller="toastController">
+    <span class="md-toast-text" flex>@Model</span>
+    <md-button ng-click="closeToast()">
+        @StyleContext.Translations.Get(Dom.Translation.Common.Ok)
+    </md-button>
+</md-toast>

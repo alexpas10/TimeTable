@@ -1,0 +1,58 @@
+﻿@model TeacherDetailVM
+
+<md-dialog ng-controller="dialogController">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Add teacher</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="hide()">
+				<md-icon md-font-library="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<form asp-action="@MVC.Controller.Teacher.Create" asp-controller="@MVC.Controller.Teacher.Name" method="post" name="teacherCreateForm" ng-controller="teacherDetailsController">
+		<input type="hidden" asp-for="Id" />
+		<md-dialog-content class="dialog_content">
+
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Surname, ngModel: "model.surname")
+                    <div ng-messages="teacherCreateForm.Surname.$error">
+                        @Html.MaterialValidationFor(m => m.Surname)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Name, ngModel: "model.name")
+                    <div ng-messages="teacherCreateForm.Name.$error">
+                        @Html.MaterialValidationFor(m => m.Name)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Patronymic, ngModel: "model.patronymic")
+                    <div ng-messages="teacherCreateForm.Patronymic.$error">
+                        @Html.MaterialValidationFor(m => m.Patronymic)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialSelectFor(m => m.PositionId, Model.PositionItems, ngModel: "model.positionId", enforceRequired:true)
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row" class="detail-card_actions">
+			<md-button class="md-raised md-primary" type="submit" ng-disabled="!teacherCreateForm.$valid">
+				<md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+			</md-button>
+			<md-button class="md-raised" ng-click="hide()">
+				<md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

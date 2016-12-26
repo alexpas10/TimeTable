@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+        <!-- Material Design fonts -->
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+        <!-- bower:css -->
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.css" />
+        <link rel="stylesheet" href="~/lib/angular-material-icons/angular-material-icons.css" />
+        <link rel="stylesheet" href="~/lib/md-data-table/dist/md-data-table-style.css" />
+        <!-- endbower -->
+        <!-- bower:js -->
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.js"></script>
+        <script src="~/lib/angular-aria/angular-aria.js"></script>
+        <script src="~/lib/angular-messages/angular-messages.js"></script>
+        <script src="~/lib/angular-material/angular-material.js"></script>
+        <script src="~/lib/lodash/lodash.js"></script>
+        <script src="~/lib/angular-sanitize/angular-sanitize.js"></script>
+        <script src="~/lib/angular-material-icons/angular-material-icons.min.js"></script>
+        <script src="~/lib/md-data-table/dist/md-data-table.js"></script>
+        <script src="~/lib/md-data-table/dist/md-data-table-templates.js"></script>
+        <!-- endbower -->
+        <!-- Bootstrap Material Design -->
+        @*<link rel="stylesheet" type="text/css" href="~/lib/material/dist/css/bootstrap-material-design.css">
+            <link rel="stylesheet" type="text/css" href="~/lib/material/dist/css/ripples.min.css">*@
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body ng-app="timeTableApp" class="delayed-appearance" ng-style="{opacity:1}">
+    <md-toolbar ng-cloak @if (ViewBag.IsDetailPage) { <text> class="toolbar_details" </text>  } layout="column">
+        <div class="md-toolbar-tools" ng-controller="menuController">
+            <md-button class="md-icon-button" ng-click="toggle()">
+                <md-icon md-font-library="material-icons">menu</md-icon>
+            </md-button>
+            <span> @StyleContext.Translations.Get(Dom.Translation.Common.TimeTable)</span>
+            @if (ViewBag.IsDetailPage) {
+            <md-button class="md-icon-button" href="@Url.Action(MVC.Controller.Common.Index)">
+                <md-icon md-font-library="material-icons">keyboard_arrow_left</md-icon>
+            </md-button>
+                <a href="@Url.Action(MVC.Controller.Common.Index)">Back to list</a>
+			}
+            <span flex></span>
+            @await Html.PartialAsync(MVC.View.Shared.Login)
+        </div>
+    </md-toolbar>
+    <md-sidenav class="md-sidenav-left postion-i"
+                md-component-id="leftMenu"
+                md-whiteframe="4"
+                layout="column"
+                @*md-is-locked-open="$mdMedia('gt-md')" *@>
+        <div class="md-toolbar-tools" ng-controller="menuController">
+            <md-button class="md-icon-button" ng-click="toggle()">
+                <md-icon md-font-library="material-icons">menu</md-icon>
+            </md-button>
+            <span> @StyleContext.Translations.Get(Dom.Translation.Common.TimeTable)</span>
+        </div>
+        <md-content>
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button href="@Url.Action(MVC.Controller.Room.List, MVC.Controller.Room.Name)">
+                        <md-icon md-font-library="material-icons" md-svg-src="/images/classroom-24.svg"></md-icon>
+                        @StyleContext.Translations.Get(Dom.Translation.Room.Plural)
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button href="@Url.Action(MVC.Controller.Group.List, MVC.Controller.Group.Name)">
+                        <md-icon md-font-library="material-icons">group</md-icon>
+                        @StyleContext.Translations.Get(Dom.Translation.Group.Plural)
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button href="@Url.Action(MVC.Controller.Subject.List, MVC.Controller.Subject.Name)">
+                        <md-icon md-font-library="material-icons">library_books</md-icon>
+                        @StyleContext.Translations.Get(Dom.Translation.Subject.Plural)
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button href="@Url.Action(MVC.Controller.Teacher.List, MVC.Controller.Teacher.Name)">
+                        <md-icon md-font-library="material-icons">person</md-icon>
+                        @StyleContext.Translations.Get(Dom.Translation.Teacher.Plural)
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button href="@Url.Action(MVC.Controller.Class.List, MVC.Controller.Class.Name)">
+                        <md-icon md-font-library="material-icons">dashboard</md-icon>
+                        @StyleContext.Translations.Get(Dom.Translation.Common.TimeTable)
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-content>
+    </md-sidenav>
+    <div class="content-wrapper" flex>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - @StyleContext.Translations.Get(Dom.Translation.Common.TimeTable)</p>
+            </footer>
+        </div>
+    </div>
+    <environment names="Development">
+
+        <!-- inject:css -->
+        <link rel="stylesheet" href="~/styles/site.css" />
+        <!-- endinject -->
+        <!-- inject:js -->
+        <script src="~/scripts/site.js"></script>
+        <script src="~/scripts/common/delete-dialog.module.js"></script>
+        <script src="~/scripts/common/details-info.module.js"></script>
+        <script src="~/scripts/common/ui.module.js"></script>
+        <script src="~/scripts/modules/class.module.js"></script>
+        <script src="~/scripts/modules/group.module.js"></script>
+        <script src="~/scripts/modules/load.module.js"></script>
+        <script src="~/scripts/modules/room.module.js"></script>
+        <script src="~/scripts/modules/subject.module.js"></script>
+        <script src="~/scripts/modules/teacher.module.js"></script>
+        <!-- endinject -->
+        @*<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>*@
+        @*<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>*@
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+        </script>
+        <script src="~/scripts/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

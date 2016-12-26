@@ -1,0 +1,77 @@
+@model TeacherDetailVM
+
+<md-card class="detail-card" ng-controller="teacherDetailsController" ng-init="init()">
+    <md-card-title>
+        <md-card-title-media>
+            <i class="material-icons md-avatar-icon md-36 details-header_icon">person</i>
+        </md-card-title-media>
+        <md-card-title-text layout="row">
+            <span class="md-headline details-header">@Model.FormattedName</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+    <md-card-content class="detail-card_content">
+        <md-tabs md-dynamic-height md-border-bottom md-selected="@ViewData[MVC.ViewData.TabId]">
+            <md-tab label="Info">
+                <form asp-action="@MVC.Controller.Teacher.Details" asp-controller="@MVC.Controller.Teacher.Name" method="post" name="teacherForm" ng-init="model.selectedSubjects=@Model.SelectedSubjects.ToJSONString()">
+                    <input type="hidden" asp-for="Id" />
+                    <md-content class="md-padding">
+                        @{ Html.RenderPartial(MVC.View.Teacher.DetailView, Model); }
+                        @{ await Html.RenderPartialAsync(MVC.View.Teacher.DetailEdit, Model); }
+                        <md-divider></md-divider>
+                        <md-list class="fixedRows" ng-controller="detailsInfoController">
+                            <md-subheader class="md-no-sticky details-additional_info" ng-click="toggle()">
+                                <md-icon ng-hide="show" md-font-library="material-icons">keyboard_arrow_up</md-icon>
+                                <md-icon ng-show="show" md-font-library="material-icons">keyboard_arrow_down</md-icon>
+                                @StyleContext.Translations.Get(Dom.Translation.Subject.Plural)
+                            </md-subheader>
+                            <div ng-show="show">
+                                <div ng-repeat="subjectId in model.selectedSubjects">
+                                    <md-list-item ng-repeat="subject in subjects" ng-if="subject.id == subjectId" ng-href="@Url.Action(MVC.Controller.Subject.Details, MVC.Controller.Subject.Name)/{{subject.id}}">
+                                        <i class="material-icons md-avatar-icon-mini">library_books</i>
+                                        <div class="md-list-item-text compact">
+                                            <p>{{subject.value}}</p>
+                                        </div>
+                                    </md-list-item>
+                                </div>
+                            </div>
+                        </md-list>
+                    </md-content>
+                    <md-card-actions layout="row" class="detail-card_actions" ng-hide="isEditMode" ng-controller="dialogController">
+                        <md-button class="md-raised md-primary flat" ng-click="setEditMode()">
+                            <md-icon md-font-library="material-icons">edit_mode</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Edit)
+                        </md-button>
+                        <md-button class="md-raised md-accent flat" ng-click="showDeleteConfirmationDialog($event)">
+                            <md-icon md-font-library="material-icons">delete</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Delete)
+                        </md-button>
+                    </md-card-actions>
+                    <md-card-actions layout="row" class="detail-card_actions" ng-show="isEditMode">
+                        <md-button class="md-raised md-primary flat" type="submit">
+                            <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+                        </md-button>
+                        <md-button class="md-raised flat" type="reset" ng-click="setViewMode()">
+                            <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+                        </md-button>
+                    </md-card-actions>
+                </form>
+
+            </md-tab>
+            <md-tab label="Loads" md-on-select="loadTab()">
+                <div ng-if="needLoadTab">
+                    @{ await Html.RenderPartialAsync(MVC.View.Teacher.LoadsTab, Model); }
+                </div>
+            </md-tab>
+        </md-tabs>
+    </md-card-content>
+</md-card>
+
+<div class="display-n">
+    <div class="md-dialog-container" id="deleteDialog">
+        @{ await Html.RenderPartialAsync(MVC.View.Shared.DeleteConfirmation, new DeleteConfirmationVM {
+				Action = MVC.Controller.Teacher.Delete,
+				Controller = MVC.Controller.Teacher.Name,
+				Id = Model.Id
+			});
+        }
+    </div>
+</div>

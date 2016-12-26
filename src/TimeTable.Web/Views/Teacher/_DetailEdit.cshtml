@@ -1,0 +1,55 @@
+﻿@model TeacherDetailVM
+
+<div ng-show="isEditMode">
+    <div layout="row">
+        <md-input-container class="input-control">
+            @Html.MaterialTextBoxFor(m => m.Surname, ngModel: "model.surname")
+            <div ng-messages="teacherForm.Surname.$error">
+                @Html.MaterialValidationFor(m => m.Surname)
+            </div>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <md-input-container class="input-control">
+            @Html.MaterialTextBoxFor(m => m.Name, ngModel: "model.name")
+            <div ng-messages="teacherForm.Name.$error">
+                @Html.MaterialValidationFor(m => m.Name)
+            </div>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <md-input-container class="input-control">
+            @Html.MaterialTextBoxFor(m => m.Patronymic, ngModel: "model.patronymic")
+            <div ng-messages="teacherForm.Patronymic.$error">
+                @Html.MaterialValidationFor(m => m.Patronymic)
+            </div>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <md-input-container class="input-control">
+            @Html.MaterialSelectFor(m => m.PositionId, Model.PositionItems, ngModel: "model.positionId")
+            <div class="md-errors-spacer"></div>
+        </md-input-container>
+    </div>
+    <div layout="row">
+        <md-input-container class="input-control">
+            <md-select ng-model="model.selectedSubjects"
+                       md-on-close="clearSearchTerm()"
+                       data-md-container-class="selectHeader"
+                       name="SelectedSubjects"
+                       multiple>
+                <md-select-header class="select-header">
+                    <input ng-model="searchTerm"
+                           type="search"
+						   ng-keydown="$event.stopPropagation();"
+                           class="header-searchbox md-text"
+                           placeholder="Search">
+                </md-select-header>
+                <md-optgroup>
+                    <md-option ng-value="subject.id" ng-repeat="subject in subjects | orderBy : value | filter : {value : searchTerm}">{{subject.value}}</md-option>
+                </md-optgroup>
+            </md-select>
+            <div class="md-errors-spacer"></div>
+        </md-input-container>
+    </div>
+</div>

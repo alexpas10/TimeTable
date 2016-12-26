@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TimeTable.DAL": {
+      "commandName": "Project",
+      "commandLineArgs": "init TranslationCode"
+    }
+  }
+}

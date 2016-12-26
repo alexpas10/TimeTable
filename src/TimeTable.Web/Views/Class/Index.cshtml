@@ -1,0 +1,77 @@
+@model ClassItemsVM
+
+<div ng-controller="classController" ng-init="init()">
+    <md-tabs md-dynamic-height md-border-bottom md-stretch-tabs="always">
+        <md-tab ng-repeat="day in days" label="{{day.value}}">
+            <md-content class="md-padding">
+                <div layout="row" class="class-table_content">
+
+                    <div layout="column">
+                        <md-card class="empty-card empty-space-card">
+                            <md-card-content class="class-card_content">
+                                <p>&nbsp;</p>
+                            </md-card-content>
+                        </md-card>
+                        <div style="height:136px;">
+                            <md-card style="height:100%;" layout="column" layout-align="center center" ng-repeat="number in numbers">
+                                <md-card-content class="class-card_content">
+                                    {{number}}
+                                </md-card-content>
+                            </md-card>
+                        </div>
+                    </div>
+                    <div layout="column" ng-repeat="group in groupKeyValues">
+                        <md-card class="class-card header">
+                            <md-card-content class="class-card_content">
+                                <p>{{group.value}}</p>
+                            </md-card-content>
+                        </md-card>
+                        <ng-repeat ng-repeat="number in numbers">
+                            <div style="height:136px;">
+
+                                <ng-repeat ng-repeat="class in items | filter : { dayOfWeekId : day.id } | filter : { groupId : group.id } | filter : { number : number } as filtered" ng-init="showEmpty[class.id]=true">
+									<md-card class="empty-card" ng-show="showEmpty[class.id]" ng-class="(filtered.length != 0 && filtered[0].weekAlternationId == @Dom.DomainValue.Second) ? 'half' : ''" layout="row" layout-align="center center" ng-if="filtered.length == 0 || filtered[0].weekAlternationId == @Dom.DomainValue.Second">
+										<md-card-content class="class-card_content">
+											<md-button class="md-icon-button" ng-click="showCreateDialog($event, day.id, group.id, number)">
+												<md-icon md-font-library="material-icons">add</md-icon>
+												<md-tooltip md-direction="right">
+													@StyleContext.Translations.Get(Dom.Translation.Common.CreateNew)
+												</md-tooltip>
+											</md-button>
+										</md-card-content>
+									</md-card>
+                                    <md-card class="class-card" ng-mouseover="showEmpty[class.id] = false" ng-mouseleave="showEmpty[class.id] = true" ng-class="(class.weekAlternationId != @Dom.DomainValue.Both) ? 'half' : ''">
+                                        <md-card-content class="class-card_content" layout="column" layout-align="start center">
+                                            <div>{{class.subjectName}}</div>
+                                            <div>{{class.teacherName}}</div>
+											<div>{{class.roomName}}</div>
+                                        </md-card-content>
+                                        <md-card-actions layout="row" class="class-card_actions">
+                                            <md-button class="md-icon-button">
+                                                <md-icon md-font-library="material-icons">edit_mode</md-icon>
+                                            </md-button>
+                                            <md-button class="md-icon-button">
+                                                <md-icon md-font-library="material-icons">delete</md-icon>
+                                            </md-button>
+                                        </md-card-actions>
+                                    </md-card>
+                                </ng-repeat>
+
+                                <md-card class="empty-card" ng-class="(filtered.length != 0 && filtered[0].weekAlternationId == @Dom.DomainValue.First) ? 'half' : ''" layout="row" layout-align="center center" ng-if="filtered.length == 0 || filtered[0].weekAlternationId == @Dom.DomainValue.First">
+                                    <md-card-content class="class-card_content">
+                                        <md-button class="md-icon-button" ng-click="showCreateDialog($event, day.id, group.id, number)">
+                                            <md-icon md-font-library="material-icons">add</md-icon>
+                                            <md-tooltip md-direction="right">
+                                                @StyleContext.Translations.Get(Dom.Translation.Common.CreateNew)
+                                            </md-tooltip>
+                                        </md-button>
+                                    </md-card-content>
+                                </md-card>
+                            </div>
+                        </ng-repeat>
+                    </div>
+                </div>
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</div>

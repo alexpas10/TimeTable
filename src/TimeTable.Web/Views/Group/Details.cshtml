@@ -1,0 +1,132 @@
+@model GroupDetailVM
+
+<md-card class="detail-card" ng-controller="groupDetailsController">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <i class="material-icons md-avatar-icon md-36 details-header_icon">group</i>
+            <span class="md-headline details-header">@Model.Name</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+    <md-card-content class="detail-card_content" ng-hide="isEditMode">
+        <dl class="dl-horizontal">
+            <dt>
+                @StyleContext.Translations.Get(Dom.Translation.Group.Year):
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Year)
+            </dd>
+            <dt>
+                @StyleContext.Translations.Get(Dom.Translation.Group.StudentsCount):
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.StudentsCount)
+            </dd>
+        </dl>
+        <md-divider></md-divider>
+        @if (!Model.Subgroups.IsNullOrEmpty()) {
+            <md-list class="fixedRows" ng-controller="detailsInfoController">
+                <md-subheader class="md-no-sticky details-additional_info" ng-click="toggle()">
+                    <md-icon ng-hide="show" md-font-library="material-icons">keyboard_arrow_up</md-icon>
+                    <md-icon ng-show="show" md-font-library="material-icons">keyboard_arrow_down</md-icon>
+                    @if (Model.TypeId == Dom.DomainValue.Group) {
+                        <span>@StyleContext.Translations.Get(Dom.Translation.Group.Subgroups)</span>
+                    } else {
+                        <span>@StyleContext.Translations.Get(Dom.Translation.Group.Plural)</span>
+                    }
+                </md-subheader>
+                <div ng-show="show">
+                    @foreach (var item in Model.Subgroups) {
+                        <md-list-item ng-href="@Url.Action(MVC.Controller.Group.Details, MVC.Controller.Group.Name, new { id = item.Id })">
+                            <i class="material-icons md-avatar-icon-mini">library_books</i>
+                            <div class="md-list-item-text compact">
+                                <p>@item.Value</p>
+                            </div>
+                        </md-list-item>
+                    }
+                </div>
+            </md-list>
+        }
+        @if (!Model.ParentGroups.IsNullOrEmpty()) {
+            <md-list class="fixedRows" ng-controller="detailsInfoController">
+                <md-subheader class="md-no-sticky details-additional_info" ng-click="toggle()">
+                    <md-icon ng-hide="show" md-font-library="material-icons">keyboard_arrow_up</md-icon>
+                    <md-icon ng-show="show" md-font-library="material-icons">keyboard_arrow_down</md-icon>
+                    @if (Model.TypeId == Dom.DomainValue.Group) {
+                        <span>@StyleContext.Translations.Get(Dom.Translation.Group.Streams)</span>
+                    } else {
+                        <span>@StyleContext.Translations.Get(Dom.Translation.Group.Singular)</span>
+                    }
+                </md-subheader>
+                <div ng-show="show">
+                @foreach (var item in Model.ParentGroups) {
+                    <md-list-item ng-href="@Url.Action(MVC.Controller.Group.Details, MVC.Controller.Group.Name, new { id = item.Id })">
+                        <i class="material-icons md-avatar-icon-mini">library_books</i>
+                        <div class="md-list-item-text compact">
+                            <p>@item.Value</p>
+                        </div>
+                    </md-list-item>
+                }
+                </div>
+            </md-list>
+        }
+    </md-card-content>
+
+    <form asp-action="@MVC.Controller.Group.Details" asp-controller="@MVC.Controller.Group.Name" method="post" name="groupForm">
+        <input type="hidden" asp-for="Id" />
+        <md-card-content class="detail-card_content" ng-show="isEditMode">
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Name, ngModel: "model.name")
+                    <div ng-messages="groupForm.StudentsCount.$error">
+                        @Html.MaterialValidationFor(m => m.Name)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.StudentsCount, ngModel: "model.studentscount")
+                    <div ng-messages="groupForm.StudentsCount.$error">
+                        @Html.MaterialValidationFor(m => m.StudentsCount)
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialTextBoxFor(m => m.Year, "model.year")
+                    <div ng-messages="groupForm.Year.$error">
+                        @Html.MaterialValidationFor(m => m.Year)
+                    </div>
+                </md-input-container>
+            </div>
+        </md-card-content>
+
+        <md-card-actions layout="row" class="detail-card_actions" ng-hide="isEditMode" ng-controller="dialogController">
+            <md-button class="md-raised md-primary" ng-click="setEditMode()">
+                <md-icon md-font-library="material-icons">edit_mode</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Edit)
+            </md-button>
+            <md-button class="md-raised md-accent" ng-click="showDeleteConfirmationDialog($event)">
+                <md-icon md-font-library="material-icons">delete</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Delete)
+            </md-button>
+        </md-card-actions>
+        <md-card-actions layout="row" class="detail-card_actions" ng-show="isEditMode">
+            <md-button class="md-raised md-primary" type="submit">
+                <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+            </md-button>
+            <md-button class="md-raised" ng-click="setViewMode()">
+                <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+            </md-button>
+        </md-card-actions>
+    </form>
+</md-card>
+
+<div class="display-n">
+    <div class="md-dialog-container" id="deleteDialog">
+        @{ Html.RenderPartial(MVC.View.Shared.DeleteConfirmation, new DeleteConfirmationVM {
+				Action = MVC.Controller.Group.Delete,
+				Controller = MVC.Controller.Group.Name,
+				Id = Model.Id
+			});
+        }
+    </div>
+</div>

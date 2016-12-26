@@ -1,0 +1,63 @@
+﻿@model RoomDetailVM
+
+<md-dialog ng-controller="dialogController">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Add room</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="hide()">
+				<md-icon md-font-library="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<form asp-action="@MVC.Controller.Room.Create" asp-controller="@MVC.Controller.Room.Name" method="post" name="roomCreateForm" ng-controller="roomDetailsController" ng-init="init('', '', '', '')">
+		<input type="hidden" asp-for="Id" />
+		<md-dialog-content class="dialog_content">
+			<div layout="row">
+				<md-input-container class="input-control">
+					<label asp-for="Name">@StyleContext.Translations.Get(Dom.Translation.Room.Name)</label>
+					<input asp-for="Name" ng-model="model.name" maxlength="32" required>
+					<div ng-messages="roomCreateForm.Name.$error">
+						<span asp-validation-for="Name" ng-message="required"></span>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container class="input-control">
+					<label asp-for="PlacesCount">@StyleContext.Translations.Get(Dom.Translation.Room.PlacesCount)</label>
+					<input asp-for="PlacesCount" ng-model="model.places" type="number" min="0" max="255" required />
+					<div ng-messages="roomCreateForm.PlacesCount.$error">
+						<span asp-validation-for="PlacesCount" ng-message-exp="['min', 'max', 'required']"></span>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container class="input-control">
+                        @Html.MaterialSelectFor(m => m.TypeId,
+                        Model.TypeItems,
+                        ngModel: "model.typeId",
+                        enforceRequired: true)
+					<div class="md-errors-spacer"></div>
+				</md-input-container>
+			</div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialSelectFor(m => m.BuildingId, 
+                        Model.BuildingItems, 
+                        ngModel: "model.buildingId", 
+                        enforceRequired: true)
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row" class="detail-card_actions">
+			<md-button class="md-raised md-primary" type="submit" ng-disabled="!roomCreateForm.$valid">
+				<md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+			</md-button>
+			<md-button class="md-raised" ng-click="hide()">
+				<md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

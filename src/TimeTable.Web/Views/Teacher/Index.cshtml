@@ -1,0 +1,22 @@
+@model TeacherItemsVM
+
+<md-list ng-controller="teacherListController">
+    @foreach (var item in Model.Items) {
+    <md-list-item class="md-3-line" ng-href="@Url.Action(MVC.Controller.Teacher.Details, MVC.Controller.Teacher.Name, new { id = item.Id })">
+        <i class="material-icons md-36 md-avatar-icon primary-color">person</i>
+        <div class="md-list-item-text">
+            <span class="title">@item.FormattedName</span>
+            <div class="list-item_info">
+                <div class="col-md-6 list-item_col">
+                    <span class="md-gray">@StyleContext.Translations.Get(Dom.Translation.Teacher.Position):</span>
+                    @item.PositionName.ToViewMode()
+                </div>
+            </div>
+        </div>
+    </md-list-item>
+    <md-divider></md-divider>
+    }
+    <md-button class="md-fab fab" ng-click="showCreateDialog()">
+        <md-icon md-font-library="material-icons">add</md-icon>
+    </md-button>
+</md-list>

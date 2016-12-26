@@ -1,0 +1,43 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@using TimeTable.Model
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section>
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" name="loginForm">
+                <hr />
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.Email, ngModel: "model.email")
+                        <div ng-messages="true">
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.Password, ngModel: "model.password")
+                        <div ng-messages="loginForm.Password.$error">
+                            <span asp-validation-for="Password" ng-message-exp="['required']"></span>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-checkbox>
+                        @Html.MaterialLabelFor(m => m.RememberMe)
+                    </md-checkbox>
+                </div>
+                <div class="form-group">
+                    <md-button class="md-raised md-primary" type="submit">
+                        @StyleContext.Translations.Get(Dom.Translation.Common.Login)
+                    </md-button>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

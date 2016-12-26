@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TimeTable.Web.ViewModel
+@using TimeTable.Model
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User)) {
+    <span class="h4">@UserManager.GetUserName(User)</span>
+    <md-menu md-position-mode="target-right target" class="toolbar-menu">
+        <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+            <md-icon md-font-library="material-icons">person</md-icon>
+        </md-button>
+        <md-menu-content width="4">
+            <md-menu-item>
+                <md-button type="button" href="@Url.Action(MVC.Controller.Manage.Index, MVC.Controller.Manage.Name)">
+                    <div layout="row" flex>
+                        <p flex>@StyleContext.Translations.Get(Dom.Translation.Common.Manage)</p>
+                    </div>
+                </md-button>
+            </md-menu-item>
+            <form asp-area="" asp-controller="@MVC.Controller.Account.Name" asp-action="@MVC.Controller.Account.LogOff" method="post" id="logoutForm">
+                <md-menu-item>
+                    <md-button type="submit">
+                        <div layout="row" flex>
+                            <p flex>@StyleContext.Translations.Get(Dom.Translation.Common.Logoff)</p>
+                        </div>
+                    </md-button>
+                </md-menu-item>
+            </form>
+        </md-menu-content>
+    </md-menu>
+} else {
+    <md-button href="@Url.Action(MVC.Controller.Account.Register, MVC.Controller.Account.Name)">
+        @StyleContext.Translations.Get(Dom.Translation.Common.Register)
+    </md-button>
+    <md-button href="@Url.Action(MVC.Controller.Account.Login, MVC.Controller.Account.Name, new { returnUrl = Url.RouteUrl(ViewContext.RouteData.Values) })">
+        @StyleContext.Translations.Get(Dom.Translation.Common.Login)
+    </md-button>
+}

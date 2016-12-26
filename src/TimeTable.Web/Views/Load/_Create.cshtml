@@ -1,0 +1,85 @@
+﻿@model LoadDetailVM
+
+<md-dialog ng-controller="dialogController" class="add-object_dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add load</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="hide()">
+                <md-icon md-font-library="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <form asp-action="@MVC.Controller.Load.Create" asp-controller="@MVC.Controller.Load.Name" method="post" ng-controller="loadTabController" name="createLoadForm">
+        <md-dialog-content class="dialog_content">
+            <div layout="row">
+                <input type="hidden" value="@Model.TeacherId" name="TeacherId" />
+                <md-input-container class="input-control" ng-init="initSubjectItems(@Model.TeacherId.ToString())">
+                    <md-select ng-model="load.subjectId"
+                               md-on-close="clearSearchTerm()"
+                               data-md-container-class="selectHeader"
+                               name="SubjectId"
+                               required>
+                        <md-select-header class="select-header">
+                            <input ng-model="searchTerm"
+                                   type="search"
+                                   ng-keydown="$event.stopPropagation();"
+                                   class="header-searchbox md-text"
+                                   placeholder="Search">
+                        </md-select-header>
+                        <md-optgroup>
+                            <md-option ng-value="subject.id" ng-repeat="subject in subjects | orderBy : value | filter : {value : searchTerm}">{{subject.value}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    <md-select ng-model="load.subjectTypeId"
+                               md-on-close="clearSearchTerm()"
+                               data-md-container-class="selectHeader"
+                               name="SubjectTypeId"
+                               required>
+                        <md-optgroup>
+                            @foreach (var item in Model.SubjectTypes) {
+                            <md-option value="@item.Id">
+                                @StyleContext.Translations.Get(item.ValueCode)
+                            </md-option>}
+                        </md-optgroup>
+                    </md-select>
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control" ng-init="initGroupItems()">
+                    <md-select ng-model="load.groupId"
+                               md-on-close="clearSearchTerm()"
+                               data-md-container-class="selectHeader"
+                               name="GroupId"
+                               required>
+                        <md-select-header class="select-header">
+                            <input ng-model="searchTerm"
+                                   type="search"
+                                   ng-keydown="$event.stopPropagation();"
+                                   class="header-searchbox md-text"
+                                   placeholder="Search">
+                        </md-select-header>
+                        <md-optgroup>
+                            <md-option ng-value="group.id" ng-repeat="group in groups | orderBy : value | filter : {value : searchTerm}">{{group.value}}</md-option>
+                        </md-optgroup>
+                    </md-select>
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row" class="detail-card_actions">
+            <md-button class="md-raised md-primary flat" type="submit" ng-disabled="!createLoadForm.$valid">
+                <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+            </md-button>
+            <md-button class="md-raised flat" ng-click="hide()">
+                <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

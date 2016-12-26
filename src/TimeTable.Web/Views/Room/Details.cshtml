@@ -1,0 +1,116 @@
+@model RoomDetailVM
+
+<md-card class="detail-card" ng-controller="roomDetailsController">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            @*<i class="material-icons details-header_icon md-36">home</i>*@
+            <span class="material-icons md-avatar-icon details-header_icon">
+                <img src="~/images/classroom.png" class="material-icons" />
+            </span>
+            <span class="md-headline details-header">@Model.Name</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+    <md-card-content class="detail-card_content" ng-hide="isEditMode">
+        <dl class="dl-horizontal">
+            <dt>
+                @StyleContext.Translations.Get(Dom.Translation.Room.Building):
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.BuildingName)
+            </dd>
+            <dt>
+                @StyleContext.Translations.Get(Dom.Translation.Room.PlacesCount):
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PlacesCount)
+            </dd>
+            <dt>
+                @StyleContext.Translations.Get(Dom.Translation.Common.Type):
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TypeName)
+            </dd>
+        </dl>
+    </md-card-content>
+
+    <form asp-action="@MVC.Controller.Room.Details" asp-controller="@MVC.Controller.Room.Name" method="post" name="roomForm">
+        <input type="hidden" asp-for="Id" />
+        <md-card-content class="detail-card_content" ng-show="isEditMode">
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @*<label asp-for="Name">@StyleContext.Translations.Get(Dom.Translation.Room.Name)</label>*@
+                    @*<input asp-for="Name" ng-model="model.name" type="text" maxlength="32" required>*@
+                    @Html.MaterialTextBoxFor(m => m.Name, ngModel: "model.name")
+                    <div ng-messages="roomForm.Name.$error">
+                        @Html.MaterialValidationFor(m => m.Name)
+                        @*<span asp-validation-for="Name" ng-message-exp="['required']"></span>*@
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @*<label asp-for="PlacesCount">@StyleContext.Translations.Get(Dom.Translation.Room.PlacesCount)</label>
+                    <input asp-for="PlacesCount" ng-model="model.places" type="number" min="0" max="255" required>*@
+                    @Html.MaterialTextBoxFor(m => m.PlacesCount, ngModel: "model.placesCount")
+                    <div ng-messages="roomForm.PlacesCount.$error">
+                        <span asp-validation-for="PlacesCount" ng-message-exp="['type', 'min', 'max', 'required']"></span>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialSelectFor(m => m.TypeId, Model.TypeItems, ngModel: "model.typeId")
+                    <div class="md-errors-spacer"></div>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                @*<md-input-container class="input-control">
+                    <label asp-for="BuildingId">@StyleContext.Translations.Get(Dom.Translation.Room.Building)</label>
+                    <md-select ng-model="model.buildingId" name="BuildingId" required>
+                        @foreach (var item in Model.BuildingItems) {
+                        <md-option value="@item.Value">
+                            @item.Text
+                        </md-option>}
+                    </md-select>
+                    <div ng-messages="roomForm.BuildingId.$error">
+                        <span asp-validation-for="BuildingId" ng-message-exp="['required']"></span>
+                    </div>
+                </md-input-container>*@
+            </div>
+            <div layout="row">
+                <md-input-container class="input-control">
+                    @Html.MaterialSelectFor(m => m.BuildingId, Model.BuildingItems, ngModel: "model.buildingId")
+                </md-input-container>
+            </div>
+        </md-card-content>
+
+        <md-card-actions layout="row" class="detail-card_actions" ng-hide="isEditMode" ng-controller="dialogController">
+            <md-button class="md-raised md-primary" ng-click="setEditMode()">
+                <md-icon md-font-library="material-icons">edit_mode</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Edit)
+            </md-button>
+            <md-button class="md-raised md-accent" ng-click="showDeleteConfirmationDialog($event)">
+                <md-icon md-font-library="material-icons">delete</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Delete)
+            </md-button>
+        </md-card-actions>
+        <md-card-actions layout="row" class="detail-card_actions" ng-show="isEditMode">
+            <md-button class="md-raised md-primary" type="submit">
+                <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+            </md-button>
+            <md-button class="md-raised" type="reset" ng-click="setViewMode()">
+                <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+            </md-button>
+        </md-card-actions>
+    </form>
+</md-card>
+
+<div class="display-n">
+    <div class="md-dialog-container" id="deleteDialog">
+        @{ Html.RenderPartial(MVC.View.Shared.DeleteConfirmation, new DeleteConfirmationVM {
+				Action = MVC.Controller.Room.Delete,
+				Controller = MVC.Controller.Room.Name,
+				Id = Model.Id
+			});
+        }
+    </div>
+</div>

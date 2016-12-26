@@ -1,0 +1,120 @@
+@model SubjectDetailVM
+
+<md-card class="detail-card" ng-controller="subjectDetailsController" ng-init="init()">
+    <md-card-title>
+        <md-card-title-media>
+            <i class="material-icons md-avatar-icon md-36 details-header_icon">library_books</i>
+        </md-card-title-media>
+        <md-card-title-text layout="row">
+            <span class="md-headline details-header">@Model.Name</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-divider></md-divider>
+
+    <form asp-action="@MVC.Controller.Subject.Details" asp-controller="@MVC.Controller.Subject.Name" method="post" name="subjectForm" ng-init="model.selectedTeachers=@Model.SelectedTeachers.ToJSONString()">
+        <input type="hidden" asp-for="Id" />
+        <md-card-content class="detail-card_content">
+            <div ng-hide="isEditMode">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @StyleContext.Translations.Get(Dom.Translation.Common.Name):
+                    </dt>
+                    <dd>
+                        @Model.Name.ToViewMode()
+                    </dd>
+                    <dt>
+                        @StyleContext.Translations.Get(Dom.Translation.Subject.ShortName):
+                    </dt>
+                    <dd>
+                        @Model.ShortName.ToViewMode()
+                    </dd>
+                </dl>
+            </div>
+            <md-card-content class="detail-card_content" ng-show="isEditMode">
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.Name)
+                        <div ng-messages="subjectForm.Name.$error">
+                            @Html.MaterialValidationFor(m => m.Name)
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        @Html.MaterialTextBoxFor(m => m.ShortName)
+                        <div ng-messages="subjectForm.ShortName.$error">
+                            @Html.MaterialValidationFor(m => m.ShortName)
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                    <md-input-container class="input-control">
+                        <md-select ng-model="model.selectedTeachers"
+                                   md-on-close="clearSearchTerm()"
+                                   data-md-container-class="selectHeader"
+                                   name="SelectedTeachers"
+                                   multiple>
+                            <md-select-header class="select-header">
+                                <input ng-model="searchTerm"
+                                       type="search"
+									   ng-keydown="$event.stopPropagation();"
+                                       class="header-searchbox md-text"
+                                       placeholder="Search">
+                            </md-select-header>
+                            <md-optgroup>
+                                <md-option ng-value="teacher.id" ng-repeat="teacher in teachers | orderBy : value | filter : {value : searchTerm}">{{teacher.value}}</md-option>
+                            </md-optgroup>
+                        </md-select>
+                        <div class="md-errors-spacer"></div>
+                    </md-input-container>
+                </div>
+            </md-card-content>
+            <md-divider></md-divider>
+            <md-list class="fixedRows" ng-controller="detailsInfoController">
+                <md-subheader class="md-no-sticky details-additional_info" ng-click="toggle()">
+                    <md-icon ng-hide="show" md-font-library="material-icons">keyboard_arrow_up</md-icon>
+                    <md-icon ng-show="show" md-font-library="material-icons">keyboard_arrow_down</md-icon>
+                    @StyleContext.Translations.Get(Dom.Translation.Teacher.Plural)
+                </md-subheader>
+                <div ng-show="show">
+                    <div ng-repeat="teacherId in model.selectedTeachers">
+                        <md-list-item ng-repeat="teacher in teachers" ng-if="teacher.id == teacherId" ng-href="@Url.Action(MVC.Controller.Teacher.Details, MVC.Controller.Teacher.Name)/{{teacher.id}}">
+                            <i class="material-icons md-avatar-icon-mini">person</i>
+                            <div class="md-list-item-text compact">
+                                <p>{{teacher.value}}</p>
+                            </div>
+                        </md-list-item>
+                    </div>
+                </div>
+            </md-list>
+        </md-card-content>
+
+        <md-card-actions layout="row" class="detail-card_actions" ng-hide="isEditMode" ng-controller="dialogController">
+            <md-button class="md-raised md-primary" ng-click="setEditMode()">
+                <md-icon md-font-library="material-icons">edit_mode</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Edit)
+            </md-button>
+            <md-button class="md-raised md-accent" ng-click="showDeleteConfirmationDialog($event)">
+                <md-icon md-font-library="material-icons">delete</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Delete)
+            </md-button>
+        </md-card-actions>
+        <md-card-actions layout="row" class="detail-card_actions" ng-show="isEditMode">
+            <md-button class="md-raised md-primary" type="submit">
+                <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+            </md-button>
+            <md-button class="md-raised" ng-click="setViewMode()">
+                <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+            </md-button>
+        </md-card-actions>
+    </form>
+</md-card>
+
+<div class="display-n">
+    <div class="md-dialog-container" id="deleteDialog">
+        @{ await Html.RenderPartialAsync(MVC.View.Shared.DeleteConfirmation, new DeleteConfirmationVM {
+				Action = MVC.Controller.Subject.Delete,
+				Controller = MVC.Controller.Subject.Name,
+				Id = Model.Id
+			});
+        }
+    </div>
+</div>

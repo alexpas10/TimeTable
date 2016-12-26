@@ -1,0 +1,28 @@
+﻿@model TeacherDetailVM
+
+<dl class="dl-horizontal" ng-hide="isEditMode">
+    <dt>
+        @Html.MaterialLabelFor(model => model.Surname):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Surname)
+    </dd>
+    <dt>
+        @Html.MaterialLabelFor(model => model.Name):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt>
+        @Html.MaterialLabelFor(model => model.Patronymic):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Patronymic)
+    </dd>
+    <dt>
+        @Html.MaterialLabelFor(model => model.PositionName):
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.PositionName)
+    </dd>
+</dl>

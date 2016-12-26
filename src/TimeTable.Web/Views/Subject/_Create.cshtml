@@ -1,0 +1,42 @@
+﻿@model SubjectDetailVM
+
+<md-dialog ng-controller="dialogController">
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h2>Add Subject</h2>
+			<span flex></span>
+			<md-button class="md-icon-button" ng-click="hide()">
+				<md-icon md-font-library="material-icons">close</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<form asp-action="@MVC.Controller.Subject.Create" asp-controller="@MVC.Controller.Subject.Name" method="post" name="subjectCreateForm" ng-controller="subjectDetailsController">
+		<input type="hidden" asp-for="Id" />
+		<md-dialog-content class="dialog_content">
+			<div layout="row">
+				<md-input-container class="input-control">
+					<label asp-for="Name">@StyleContext.Translations.Get(Dom.Translation.Common.Name)</label>
+					<input asp-for="Name" ng-model="model.name" maxlength="255" required>
+					<div ng-messages="subjectCreateForm.Name.$error">
+						<span asp-validation-for="Name" ng-message-exp="['required']"></span>
+					</div>
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<md-input-container class="input-control">
+					<label asp-for="ShortName">@StyleContext.Translations.Get(Dom.Translation.Common.Name)</label>
+					<input asp-for="ShortName" ng-model="model.shortName" maxlength="32">
+				</md-input-container>
+			</div>
+		</md-dialog-content>
+
+		<md-dialog-actions layout="row" class="detail-card_actions">
+			<md-button class="md-raised md-primary" type="submit" ng-disabled="!subjectCreateForm.$valid">
+				<md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+			</md-button>
+			<md-button class="md-raised" ng-click="hide()">
+				<md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+			</md-button>
+		</md-dialog-actions>
+	</form>
+</md-dialog>

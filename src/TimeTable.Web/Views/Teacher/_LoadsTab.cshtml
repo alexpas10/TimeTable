@@ -1,0 +1,108 @@
+﻿@model TeacherDetailVM
+
+<md-content ng-controller="loadTabController">
+    <md-list class="fixedRows" ng-init="initLoadListForTeacher(@Model.Id.ToString())">
+        <md-list-item class="md-2-line list-item_header">
+            <i class="material-icons md-avatar-icon visibility-h">work</i>
+            <div class="md-list-item-text" md-no-ink>
+                <div class="h5 col-xs-8">Subject</div>
+                <div class="h5 col-xs-4">Group</div>
+
+                <md-icon class="md-secondary visibility-h" ng-disabled="true" ng-click="null" md-font-library="material-icons">delete</md-icon>
+                <md-icon class="md-secondary" ng-click="showCreateDialog($event, @Model.Id.ToString())" md-font-library="material-icons">
+                    add
+                    <md-tooltip md-direction="right">
+                        Create new
+                    </md-tooltip>
+                </md-icon>
+            </div>
+        </md-list-item>
+        <md-divider></md-divider>
+        <div ng-repeat="load in items">
+            <md-list-item class="md-2-line" ng-click="null">
+                <i class="material-icons md-avatar-icon">work</i>
+                <div class="md-list-item-text">
+                    <div class="h4 col-md-8">
+                        {{load.subjectName}}
+                        <div class="h5 md-gray">{{load.subjectTypeName}}</div>
+                    </div>
+                    <div class="h4 col-md-4">
+                        {{load.groupName}}
+                    </div>
+                </div>
+                <md-icon class="md-secondary" ng-click="setEditMode(load)" md-font-library="material-icons">edit_mode</md-icon>
+                <md-icon class="md-secondary" ng-click="delete($index)" md-font-library="material-icons">delete</md-icon>
+            </md-list-item>
+
+            <div ng-show="load.isEdit" class="form-on-list">
+                <form asp-action="@MVC.Controller.Load.Details" asp-controller="@MVC.Controller.Load.Name" method="post">
+                    <input type="hidden" value="{{load.id}}" name="Id" />
+                    <input type="hidden" value="@Model.Id" name="TeacherId" />
+                    <div layout="row">
+                        <md-input-container class="input-control" ng-init="initSubjectItems(@Model.Id.ToString())">
+                            <md-select ng-model="load.subjectId"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="selectHeader"
+                                       name="SubjectId"
+                                       required>
+                                <md-select-header class="select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           ng-keydown="$event.stopPropagation();"
+                                           class="header-searchbox md-text"
+                                           placeholder="Search">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="subject.id" ng-repeat="subject in subjects | orderBy : value | filter : {value : searchTerm}">{{subject.value}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <div class="md-errors-spacer"></div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container class="input-control">
+                            <md-select ng-model="load.subjectTypeId"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="selectHeader"
+                                       name="SubjectTypeId">
+                                <md-optgroup>
+                                    @foreach (var item in Model.SubjectTypeItems) {
+                                        <md-option value="@item.Id">
+                                            @StyleContext.Translations.Get(item.ValueCode)
+                                        </md-option>}
+                                </md-optgroup>
+                            </md-select>
+                            <div class="md-errors-spacer"></div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container class="input-control" ng-init="initGroupItems()">
+                            <md-select ng-model="load.groupId"
+                                       md-on-close="clearSearchTerm()"
+                                       data-md-container-class="selectHeader"
+                                       name="GroupId">
+                                <md-select-header class="select-header">
+                                    <input ng-model="searchTerm"
+                                           type="search"
+                                           ng-keydown="$event.stopPropagation();"
+                                           class="header-searchbox md-text"
+                                           placeholder="Search">
+                                </md-select-header>
+                                <md-optgroup>
+                                    <md-option ng-value="group.id" ng-repeat="group in groups | orderBy : value | filter : {value : searchTerm}">{{group.value}}</md-option>
+                                </md-optgroup>
+                            </md-select>
+                            <div class="md-errors-spacer"></div>
+                        </md-input-container>
+                    </div>
+                    <md-button class="md-raised md-primary flat" type="submit">
+                        <md-icon md-font-library="material-icons">save</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Save)
+                    </md-button>
+                    <md-button class="md-raised flat" ng-click="setViewMode(load)">
+                        <md-icon md-font-library="material-icons">cancel</md-icon> @StyleContext.Translations.Get(Dom.Translation.Common.Cancel)
+                    </md-button>
+                </form>
+            </div>
+        </div>
+    </md-list>
+</md-content>

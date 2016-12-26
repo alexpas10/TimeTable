@@ -1,0 +1,29 @@
+@model RoomItemsVM
+
+<md-list ng-controller="roomListController">
+	@foreach (var item in Model.Items) {
+	<md-list-item class="md-3-line" ng-href="@Url.Action(MVC.Controller.Room.Details, MVC.Controller.Room.Name, new { id = item.Id })">
+		@*<i class="material-icons md-list-item md-36 md-avatar-icon">home</i>*@
+		<span class="img-circle md-36 md-avatar-icon primary-color">
+			<img src="~/images/classroom.png" alt="Room" class="material-icons" />
+		</span>
+		<div class="md-list-item-text">
+			<span class="title">@item.Name </span>
+			<div class="list-item_info">
+				<div class="col-md-6 list-item_col">
+					<span class="md-gray">@StyleContext.Translations.Get(Dom.Translation.Common.Type):</span>
+					@item.TypeName.ToViewMode()
+				</div>
+				<div class="col-md-6 list-item_col">
+					<span class="md-gray">@StyleContext.Translations.Get(Dom.Translation.Room.PlacesCount):</span>
+					@item.PlacesCount
+				</div>
+			</div>
+		</div>
+	</md-list-item>
+		<md-divider></md-divider>
+	}
+	<md-button class="md-fab fab" ng-click="showCreateDialog()">
+		<md-icon md-font-library="material-icons">add</md-icon>
+	</md-button>
+</md-list>
