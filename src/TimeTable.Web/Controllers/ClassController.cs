@@ -87,14 +87,27 @@ namespace TimeTable.Web.Controllers {
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(ClassDetailVM newClassVM) {
+		public ActionResult Create(ClassCreateVM newClassVM) {
+			if (!newClassVM.WeekAlternationId.HasValue
+				|| !newClassVM.RoomId.HasValue
+				|| !newClassVM.LoadId.HasValue
+				|| !newClassVM.DayOfWeekId.HasValue
+			) {
+				ModelState.AddModelError("Error", "Missed required fields");
+			}
 			if (ModelState.IsValid) {
-				Class classEntity = new Class();
+				Class classEntity = new Class {
+					DayOfWeekId = newClassVM.DayOfWeekId.Value,
+					LoadId = newClassVM.LoadId.Value,
+					Number = newClassVM.Number.Value,
+					RoomId = newClassVM.RoomId.Value,
+					WeekAlternationId = newClassVM.WeekAlternationId.Value
+				};
 				var createdClass = _classRepository.Add(classEntity);
 				_classRepository.UnitOfWork.SaveChanges();
 				return View();
 			}
-			return Json(new { message = StyleContext.Translations.Get(Dom.Translation.Common.Error) });
+			return RedirectToAction(MVC.Controller.Class.List);
 		}
 
 		[HttpPost]
