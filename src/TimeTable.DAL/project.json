@@ -14,8 +14,7 @@
       "version": "1.0.1",
       "type": "platform"
     },
-    "TimeTable.Model": "1.0.0-*",
-    "Unity": "4.0.1"
+    "TimeTable.Model": "1.0.0-*"
   },
   "frameworks": {
     "netcoreapp1.0": {

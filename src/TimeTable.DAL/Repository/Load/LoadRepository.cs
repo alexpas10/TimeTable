@@ -20,7 +20,7 @@ namespace TimeTable.DAL.Repository {
 				.Include(l => l.Teacher)
 				.Include(l => l.Group).AsQueryable();
 			if (groupId.HasValue) {
-				query = query.Where(l => l.GroupId == groupId);
+				query = query.Where(l => l.GroupId == groupId).ToList();
 			}
 
 			var unavailableLoads = query.Join(GetQuery<Class>().Include(c => c.Load),

@@ -17,13 +17,48 @@
     		$scope.show = !$scope.show;
     	};
 
-    	$scope.setEditMode = function(load) {
+    	$scope.setEditMode = function (load) {
     		load.isEdit = true;
     	}
 
     	$scope.setViewMode = function (load) {
     		load.isEdit = false
     	}
+
+    	$scope.initCreate = function (dayId, groupId, number) {
+    		$http.get('/class/days')
+				.success(function (data, status, headers, config) {
+					$scope.days = data;
+					$scope.initNumbers();
+					$http.get('/group/getgroupselectitems')
+					   .success(function (data, status, headers, config) {
+					   	$scope.groupSelectItems = data;
+					   	$http.get('/load/getavalivableloadselectitems?dayId=' + dayId + '&groupId=' + groupId + '&number=' + number)
+						   .success(function (data, status, headers, config) {
+						   	$scope.loads = data;
+						   	$http.get('/class/weekalternations?dayId=' + dayId + '&groupId=' + groupId + '&number=' + number)
+								.success(function (data, status, headers, config) {
+									$scope.weekAlternations = data;
+									$http.get('/room/getavalivableroomselectitems?dayId=' + dayId + '&number=' + number)
+										.success(function (data, status, headers, config) {
+											$scope.rooms = data;
+										})
+										.error($scope.errorHandler(data, status, header, config));
+								})
+								.error($scope.errorHandler(data, status, header, config));
+						   })
+						   .error(function (data, status, header, config) {
+						   	$scope.ResponseDetails = "Data: " + data +
+								"<br />status: " + status +
+								"<br />headers: " + jsonFilter(header) +
+								"<br />config: " + jsonFilter(config);
+						   });
+					   })
+					   	.error($scope.errorHandler(data, status, header, config));
+				})
+				.error($scope.errorHandler(data, status, header, config));
+    		$scope.initRooms(dayId, number);
+    	};
 
     	$scope.init = function () {
     		$http.get('/class/list')
@@ -160,6 +195,13 @@
     			clickOutsideToClose: true,
     			fullscreen: true
     		})
+    	}
+
+		$scope.errorHandler = function(data, status, header, config) {
+			$scope.ResponseDetails = "Data: " + data +
+				"<br />status: " + status +
+				"<br />headers: " + jsonFilter(header) +
+				"<br />config: " + jsonFilter(config);
     	}
 
     	function load(teacherId, subjectId, subjectTypeId, groupId) {

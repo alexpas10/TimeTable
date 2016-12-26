@@ -240,3 +240,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/src/TimeTable.Data/*.sqlite
+/src/TimeTable.Data/*.dbs

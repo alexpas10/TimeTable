@@ -11,12 +11,12 @@
         </div>
     </md-toolbar>
     <form asp-action="@MVC.Controller.Class.Create" asp-controller="@MVC.Controller.Class.Name" method="post" ng-controller="classController" name="createClassForm">
-        <md-dialog-content class="dialog_content">
+        <md-dialog-content class="dialog_content" ng-init="initCreate(@Model.DayOfWeekId.ToString(), @Model.GroupId.ToString(), @Model.Number.ToString())" >
             <div layout="row">
                 <md-input-container class="input-control">
                     <label>@StyleContext.Translations.Get(Dom.Translation.Common.Day)</label>
                     <md-select ng-model="model.dayId"
-                               ng-init="initDays(); model.dayId=@Model.DayOfWeekId.ToString()"
+                               ng-init="model.dayId=@Model.DayOfWeekId.ToString()"
                                @if (Model.DayOfWeekId.HasValue) { <text>
                                ng-disabled="true"
                                </text>  }
@@ -35,7 +35,7 @@
                 <md-input-container class="input-control">
                     <label>@StyleContext.Translations.Get(Dom.Translation.Common.Number)</label>
                     <md-select ng-model="model.number"
-                               ng-init="initNumbers(); model.number=@Model.Number.ToString()"
+                               ng-init="model.number=@Model.Number.ToString()"
                                @if (Model.Number.HasValue) { <text>
                                ng-disabled="true"
                                </text>   }
@@ -54,7 +54,7 @@
                 <md-input-container class="input-control" >
                     <label>@StyleContext.Translations.Get(Dom.Translation.Group.Singular)</label>
                     <md-select ng-model="model.groupId"
-                               ng-init="initGroupSelectItems(); model.groupId=@Model.GroupId.ToString()"
+                               ng-init="model.groupId=@Model.GroupId.ToString()"
                                @if (Model.GroupId.HasValue) {
                                <text>
                                     ng-disabled="true"
@@ -82,7 +82,6 @@
 				<md-input-container class="input-control">
 					<label>@StyleContext.Translations.Get(Dom.Translation.Load.Singular)</label>
 					<md-select ng-model="model.loadId"
-							   ng-init="initLoads(@Model.DayOfWeekId.ToString(), @Model.GroupId.ToString(), @Model.Number.ToString())"
 							   md-on-close="clearSearchTerm()"
 							   data-md-container-class="selectHeader"
 							   name="LoadId"
@@ -105,7 +104,6 @@
 				<md-input-container class="input-control">
 					<label>@StyleContext.Translations.Get(Dom.Translation.Common.Week)</label>
 					<md-select ng-model="model.weekAlternationId"
-							   ng-init="initWeekAlternations(@Model.DayOfWeekId.ToString(), @Model.GroupId.ToString(), @Model.Number.ToString())"
 							   md-on-close="clearSearchTerm()"
 							   data-md-container-class="selectHeader"
 							   name="WeekAlternationId"
@@ -121,7 +119,6 @@
 				<md-input-container class="input-control">
 					<label>@StyleContext.Translations.Get(Dom.Translation.Room.Singular)</label>
 					<md-select ng-model="model.roomId"
-							   ng-init="initRooms(@Model.DayOfWeekId.ToString(), @Model.Number.ToString())"
 							   md-on-close="clearSearchTerm()"
 							   data-md-container-class="selectHeader"
 							   name="RoomId"

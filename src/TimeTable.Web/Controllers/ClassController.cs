@@ -105,7 +105,7 @@ namespace TimeTable.Web.Controllers {
 				};
 				var createdClass = _classRepository.Add(classEntity);
 				_classRepository.UnitOfWork.SaveChanges();
-				return View();
+				return RedirectToAction(MVC.Controller.Class.List);
 			}
 			return RedirectToAction(MVC.Controller.Class.List);
 		}
